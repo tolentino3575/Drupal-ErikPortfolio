@@ -1,0 +1,5 @@
+name = Groceries
+description = Display groceries.
+package = Erik Custom
+core = 7.x
+files[] = groceries.module

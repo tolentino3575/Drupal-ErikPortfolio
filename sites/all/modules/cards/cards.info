@@ -1,0 +1,5 @@
+name = Cards
+description = Display cards to friends.
+package = Erik Custom
+core = 7.x
+files[] = cards.module

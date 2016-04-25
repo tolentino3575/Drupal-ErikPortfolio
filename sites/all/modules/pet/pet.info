@@ -1,0 +1,5 @@
+name = Pet
+description = Display pets.
+package = Erik Custom
+core = 7.x
+files[] = pet.module

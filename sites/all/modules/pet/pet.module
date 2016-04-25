@@ -1,0 +1,18 @@
+<?php
+function pet_menu() {
+  $items = array();
+  $items['pets'] = array(
+    'title' => "My favorite pet!",
+    'page callback' => 'favorite_pet',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+function favorite_pet() {
+  return '<p>My favorite pet is my dog Winston!
+          He is a corgi. Here is some info about corgis: <a href="https://en.wikipedia.org/wiki/Welsh_Corgi">Corgi Info</a>
+          <img src="sites/default/files/dog.jpg">
+          </p>';
+}

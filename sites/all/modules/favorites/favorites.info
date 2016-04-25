@@ -1,0 +1,5 @@
+name = Favorites
+description = Display favorites.
+package = Erik Custom
+core = 7.x
+files[] = favorites.module
