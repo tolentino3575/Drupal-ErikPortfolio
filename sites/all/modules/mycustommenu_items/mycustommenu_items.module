@@ -20,13 +20,28 @@ function mycustommenu_items_menu() {
         'title' => "Hello Friend!",
         'page callback' => 'say_hello',
         'access callback' => TRUE,
-        'type' => MENU_NORMAL_ITEM,
+        'type' => MENU_CALLBACK,
     );
-    $items['farewell'] = array(
+    $items['farewell_admin'] = array(
         'title' => 'Farewell Friend!',
         'page callback' => 'say_farewell',
+        'page arguments' => array('Admin'),
         'access callback' => TRUE,
-        'type' => MENU_NORMAL_ITEM,
+        'type' => MENU_CALLBACK,
+    );
+    $items['farewell_auth'] = array(
+      'title' => 'Farewell User!',
+      'page callback' => 'say_farewell',
+      'page arguments' => array('Auth'),
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+    );
+    $items['farewell_mod'] = array(
+      'title' => 'Farewell User!',
+      'page callback' => 'say_farewell',
+      'page arguments' => array('Mod'),
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
     );
     $items['groceries'] = array(
         'title' => "Grocery List",
@@ -62,8 +77,8 @@ function say_hello() {
     return '<p>Hello my dear friend!</p>';
 }
 
-function say_farewell() {
-    return '<p>Fare thee well my dear friend!</p>';
+function say_farewell($type) {
+    return "<p>Fare thee well $type!</p>";
 }
 
 function display_list() {
@@ -114,8 +129,26 @@ function specials_display() {
 
 function mycustommenu_items_user_login() {
   $_GET['destination'] = 'hello_friend';
+  $title = drupal_get_title();
+  drupal_set_message("The title of this page is: $title");
 }
 
 function mycustommenu_items_user_logout() {
-  $_GET['destination'] = 'farewell';
+  $admin = user_role_load_by_name('administrator')->rid;
+  $mod = user_role_load_by_name('moderator')->rid;
+  $auth = user_role_load_by_name('authenticated user')->rid;
+
+  switch (TRUE) {
+    case (user_has_role($admin)):
+        $_GET['destination'] = 'farewell_admin';
+        break;
+    case (user_has_role($mod)):
+        $_GET['destination'] = 'farewell_mod';
+        break;
+    default:
+        $_GET['destination'] = 'farewell_auth';
+
+  }
+
+
 }
