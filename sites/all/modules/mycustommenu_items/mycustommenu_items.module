@@ -1,0 +1,121 @@
+<?php
+
+global $favs;
+$favs['movies'] = array('Top Gun', 'Twilight', 'Jungle Book');
+$favs['books'] = array('Dr. Strange', 'The Bible', 'Tom and Jerry');
+$favs['food'] = array('Burrito', 'Pizza', 'Gelato');
+
+function mycustommenu_items_menu() {
+    global $favs;
+    foreach($favs as $key => $fav) {
+        $items['favorites/'.$key] = array(
+            'title' => 'My favorite '.$key,
+            'page callback' => "display_favorite",
+            'page arguments' => array($fav),
+            'access callback' => TRUE,
+            'type' => MENU_NORMAL_ITEM,
+        );
+    }
+    $items['hello_friend'] = array(
+        'title' => "Hello Friend!",
+        'page callback' => 'say_hello',
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['farewell'] = array(
+        'title' => 'Farewell Friend!',
+        'page callback' => 'say_farewell',
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['groceries'] = array(
+        'title' => "Grocery List",
+        'page callback' => "display_list",
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['fav_pet'] = array(
+        'title' => "Favorite Pet",
+        'page callback' => 'display_pet',
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['specials'] = array(
+        'title' => "Cameron's Daily Specials",
+        'page callback' => 'specials_display',
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+        );
+
+    return $items;
+}
+
+function display_favorite($fav) {
+    $result = '';
+    foreach ($fav as $value) {
+        $result .= "<li>$value</li>";
+    }
+    return $result;
+}
+
+function say_hello() {
+    return '<p>Hello my dear friend!</p>';
+}
+
+function say_farewell() {
+    return '<p>Fare thee well my dear friend!</p>';
+}
+
+function display_list() {
+    $list = array(
+        0 => array(
+            'type' => 'eggs',
+            'price' => 1.99,
+            'quantity' => 2,
+        ),
+        1 => array(
+            'type' => 'ham',
+            'price' => .99,
+            'quantity' => 2,
+        ),
+    );
+
+    $result = "<ul>";
+
+    foreach ($list as $item => $product) {
+        $result .= "<li>".$product['type']."</li>";
+        $result .= "<ul>";
+        $result .= "<li>Price: $".$product['price']."</li>";
+        $result .= "<li>Quantity: ".$product['quantity']."</li>";
+        $result .= "<li>Total Price: $".$product['quantity']*$product['price']."</li>";
+        $result .= "</ul>";
+
+    }
+    $result .= "</ul>";
+
+    return $result;
+
+}
+
+function display_pet() {
+    $path = drupal_get_path('module', 'pet');
+    return "<img src=$path/cat.jpeg />";
+}
+
+function specials_display() {
+    return '
+    <ul>
+        <li>Chai Latte</li>
+        <li>Chocolate bacon cookies</li>
+        <li>Salted caramel apple croissant</li>
+    </ul>
+    ';
+}
+
+function mycustommenu_items_user_login() {
+  $_GET['destination'] = 'hello_friend';
+}
+
+function mycustommenu_items_user_logout() {
+  $_GET['destination'] = 'farewell';
+}

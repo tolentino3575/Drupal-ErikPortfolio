@@ -1,0 +1,5 @@
+name = My Custom Menu Items
+description = All my first custom modules
+package = Epicodus Examples
+core = 7.x
+files[] = mycustommenu_items.module
