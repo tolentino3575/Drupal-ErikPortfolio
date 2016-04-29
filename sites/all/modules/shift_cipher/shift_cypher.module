@@ -1,0 +1,60 @@
+<?php
+
+function shift_cypher_menu(){
+    $items = array();
+    $items['shift_cypher'] = array(
+        'title' => 'Shift Cypher',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('shift_cypher_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['shift_cypher_succes_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'shift_cypher_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function shift_cypher_form(){
+    $form['shift_value'] = array(
+        '#title' => 'Shift Value',
+        '#type' => 'textfield',
+        '#description' => 'How many spaces would you like to shift?',
+        '#element_validate' => array('element_validate_integer_positive'),
+        '#required' => TRUE,
+    );
+    $form['shift_direction'] = array(
+        '#title' => 'Shift Direction',
+        '#type' => 'textfield',
+        '#description' => 'Shift left or right?',
+        '#element_validate' => array('element_validate_direction'),
+        '#required' => TRUE,
+    );
+    $form['phrase'] = array(
+        '#title' => 'Phrase',
+        '#type' => 'textfield',
+        '#description' => 'Enter a phrase to shift! (Only letters, spaces, and punctuation allowed!)',
+        '#element_validate' => array('element_validate_phrase'),
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'GO!',
+    );
+    return $form;
+}
+
+function element_validate_direction($element) {
+    $direction = strtolower($element['#value']);
+
+    if($direction != 'left' || $direction != 'right') {
+        form_set_error('shift_direction', t('Please enter a valid direction.'));
+    }
+}
+
+function element_validate_phrase($element) {
+    $phrase = strtolower($element['#value']);
+}

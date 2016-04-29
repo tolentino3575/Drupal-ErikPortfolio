@@ -1,0 +1,5 @@
+name = Shift Cypher
+description = A module that will shift your letters.
+package = Erik Custom
+core = 7.x
+files[] = shift_cypher.module
