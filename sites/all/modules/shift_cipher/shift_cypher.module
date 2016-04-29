@@ -9,7 +9,7 @@ function shift_cypher_menu(){
         'access callback' => TRUE,
         'type' => MENU_NORMAL_ITEM,
     );
-    $items['shift_cypher_succes_page'] = array(
+    $items['shift_cypher_success_page'] = array(
         'title' => 'Success',
         'page callback' => 'shift_cypher_success',
         'access callback' => TRUE,
@@ -48,13 +48,42 @@ function shift_cypher_form(){
 }
 
 function element_validate_direction($element) {
+    // $user_direction = strtolower($element['#value']);
+    // $directions = array('left', 'right');
+    //
+    // if(!in_array($user_direction, $directions)) {
+    //     form_set_error('shift_direction', t('Please enter a valid direction.'));
+    // }
+
+    // $direction = strtolower($element['#value']);
+    //
+    // if($direction != 'left' || $direction != 'right'){
+    //     form_set_error('shift_direction', t('Please enter a valid direction!'));
+    // }
+
     $direction = strtolower($element['#value']);
 
-    if($direction != 'left' || $direction != 'right') {
-        form_set_error('shift_direction', t('Please enter a valid direction.'));
+    if($direction !== 'left' && $direction !== 'right'){
+        form_error($element, 'Enter a valid direction!');
     }
 }
 
 function element_validate_phrase($element) {
     $phrase = strtolower($element['#value']);
+
+    if(!preg_match("/^[a-zA-Z\ .'s]*$/", $phrase)) {
+        form_set_error('phrase', t('Only letters and punctuation!'));
+    }
+}
+
+function shift_cypher_form_submit($form, &$form_state) {
+    $shift_value = $form_state['values']['shift_value'];
+    $shift_direction = $form_state['values']['shift_direction'];
+    $phrase = $form_state['values']['phrase'];
+
+    $form_state['redirect'] = 'shift_cypher_success_page';
+}
+
+function shift_cypher_success() {
+    echo 'nice';
 }
