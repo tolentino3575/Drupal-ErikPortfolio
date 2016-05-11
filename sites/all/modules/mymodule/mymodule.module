@@ -1,0 +1,37 @@
+<?php
+function mymodule_menu() {
+    $items['path-to-ajax/%/%'] = array (
+    'access arguments' => array('access content'),
+    'page callback' => 'mymodule_ajax_callback',
+    'page arguments' => array(1,2),
+    'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+//$js and $node_id can be called anything, they come from the page arguments
+function mymodule_ajax_callback($js, $node_id) {
+    $node = node_load($node_id);
+    //node_load - drupal function that creates the actual node object we are trying to load, from the $node_id that was passed into it
+
+    if ($js == 'nojs') {
+        drupal_goto('node/' . $node ->nid);
+    }
+    //drupal_goto will route user to page at URL for that node if there is nojs
+    //if nojs is still in url path, that means js is not enabled and just gets sent to the node page instead of rendering on this page
+
+
+    //Get the render array for the node, and render it into actual html
+    $build = node_view($node);
+    $html = render($build);
+    //node_view pulls out all the info about the node we loaded, which is an array and is set to a variable and passed into drupal function render
+    //render translates the array into html that can print onto the screen
+
+    //Here we prepare an ajax command to insert the node's html into our div under News - the wrapper.
+    $commands = array();
+    $commands[] = ajax_command_html('#mymodule-ajax-wrapper', $html);
+
+    //Render the commands into JSON data format and execute them by printing them to the browser
+    print ajax_render($commands);
+    exit; //Exit so Drupal doesn't have a chance to build a whole page
+}
