@@ -1,0 +1,6 @@
+name = DNA
+description = Double helix creator
+package = Erik Custom
+core = 7.x
+files[] = dna.module
+files[] = dna.test

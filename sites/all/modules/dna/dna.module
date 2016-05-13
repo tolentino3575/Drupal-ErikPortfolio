@@ -1,0 +1,71 @@
+<?php
+
+function dna_menu() {
+    $items = array();
+    $items['dna'] = array(
+        'title' => 'Double Helix Creator',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('dna_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM
+    );
+    $items['dna_success_page'] = array(
+        'title' => 'Your Double Helix',
+        'page callback' => 'dna_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK
+    );
+    return $items;
+}
+
+function dna_form(){
+    $form['dna_nucleotide'] = array(
+        '#nucleotide' => 'Nucleotide',
+        '#type' => 'textfield',
+        '#description' => 'Enter a nucleotide! A, T, C, or G only please!',
+        '#element_validate' => array('element_validate_nucleotide'),
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Helix it up!',
+    );
+    return $form;
+}
+
+function element_validate_nucleotide($element) {
+    $dna = str_split(strtolower($element['#value']));
+    $nucleotide_array = array('a', 't', 'c', 'g');
+
+    foreach($dna as $nucleotide) {
+        if(!in_array($nucleotide, $nucleotide_array)){
+            form_set_error('phrase', t("That nucleotide isn't in your DNA! What are you an alien?! A, T, C or G! Enter one of those!"));
+        }
+    }
+}
+
+function dna_form_submit($form, &$form_state){
+    // $nucleotide_set_one = array('a', 't', 'c', 'g');
+    $input_nucleotide = str_split(strtolower($form_state['values']['dna_nucleotide']));
+    $output = '';
+
+    foreach($input_nucleotide as $nucleotide) {
+        if($nucleotide === 'a') {
+            $output .= 't';
+        } elseif($nucleotide === 't'){
+            $output .= 'a';
+        } elseif($nucleotide === 'c'){
+            $output .= 'g';
+        } elseif($nucleotide === 'g'){
+            $output .= 'c';
+        }
+    }
+
+    $_SESSION['new_dna'] = $output;
+    $form_state['redirect'] = 'dna_success_page';
+}
+
+function dna_success(){
+    $dna = $_SESSION['new_dna'];
+    return "Your double helix is: $dna";
+}
