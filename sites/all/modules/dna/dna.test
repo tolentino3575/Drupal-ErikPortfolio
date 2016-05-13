@@ -15,7 +15,7 @@ class DnaTestCase extends DrupalUnitTestCase
         //     parent::setUp();
         // }
 
-        public function testDNA(){
+        public function testUnitDNA(){
             $message = 'A single lowercased nucleotide should return its pair';
 
             //Arrange
@@ -40,5 +40,23 @@ class DnaTestCase extends DrupalUnitTestCase
             $expected_result = 'tagc';
             $this->assertTrue($result, $expected_result, $message);
         }
+}
 
+class DnaUnitTestCase extends DrupalWebTestCase {
+    public static function getInfo() {
+        return array(
+            'name' => 'Double Helix functional test',
+            'description' => 'Ensure that the dna content functions properly',
+            'group' => 'DNA',
+        );
+    }
+
+    public function setUp() {
+        parent::setUp(array('dna'));
+    }
+
+    public function testDnaSuccess() {
+        $this->drupalGet('dna');
+        $this->assertText('Enter a nucleotide! Unless you are an alien, enter A, T, C, or G only.', 'The text on page is correct, but are you an alien....?!');
+    }
 }

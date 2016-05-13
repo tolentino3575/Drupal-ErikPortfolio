@@ -1,0 +1,1 @@
+[13-May-2016 12:47:37 America/Los_Angeles] PHP Fatal error:  Call to undefined method DnaUnitTestCase::assertEquals() in /Users/Guest/Desktop/Drupal-ErikPortfolio/sites/all/modules/dna/dna.test on line 60

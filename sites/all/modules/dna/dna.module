@@ -22,13 +22,13 @@ function dna_form(){
     $form['dna_nucleotide'] = array(
         '#nucleotide' => 'Nucleotide',
         '#type' => 'textfield',
-        '#description' => 'Enter a nucleotide! A, T, C, or G only please!',
+        '#description' => 'Enter a nucleotide! Unless you are an alien, enter A, T, C, or G only.',
         '#element_validate' => array('element_validate_nucleotide'),
         '#required' => TRUE,
     );
     $form['submit'] = array(
         '#type' => 'submit',
-        '#value' => 'Helix it up!',
+        '#value' => 'Lets helix it up!',
     );
     return $form;
 }
@@ -39,7 +39,7 @@ function element_validate_nucleotide($element) {
 
     foreach($dna as $nucleotide) {
         if(!in_array($nucleotide, $nucleotide_array)){
-            form_set_error('phrase', t("That nucleotide isn't in your DNA! What are you an alien?! A, T, C or G! Enter one of those!"));
+            form_set_error('phrase', t("That nucleotide isn't in your DNA! What are you an alien?! This doesn't work for aliens! A, T, C or G! Enter one of those!"));
         }
     }
 }
