@@ -1,0 +1,44 @@
+<?php
+
+class DnaTestCase extends DrupalUnitTestCase
+{
+    public static function getInfo(){
+        return array(
+            'name' => 'Double Helix unit test',
+            'description' => 'Test that dna_form_submit works properly.',
+            'group' => 'DNA',
+        );
+    }
+
+        // public function setUp() {
+        //     drupal_load('module', 'dna');
+        //     parent::setUp();
+        // }
+
+        public function testDNA(){
+            $message = 'A single lowercased nucleotide should return its pair';
+
+            //Arrange
+            $input = 'a';
+
+            //Act
+            $result = double_helix_creator($input);
+
+            //Assert
+            $expected_result = 't';
+            $this->assertTrue($result, $expected_result, $message);
+
+            $message = 'A single capitalized nucleotide should return its pair lowercased';
+            $input = 'A';
+            $result = double_helix_creator($input);
+            $expected_result = 't';
+            $this->assertTrue($result, $expected_result, $message);
+
+            $message = 'Multiple nucleotides should return their pairs';
+            $input = 'atcg';
+            $result = double_helix_creator($input);
+            $expected_result = 'tagc';
+            $this->assertTrue($result, $expected_result, $message);
+        }
+
+}

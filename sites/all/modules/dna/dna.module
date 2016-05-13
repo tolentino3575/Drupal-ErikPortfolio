@@ -44,9 +44,9 @@ function element_validate_nucleotide($element) {
     }
 }
 
-function dna_form_submit($form, &$form_state){
+function double_helix_creator($input){
     // $nucleotide_set_one = array('a', 't', 'c', 'g');
-    $input_nucleotide = str_split(strtolower($form_state['values']['dna_nucleotide']));
+    $input_nucleotide = str_split(strtolower($input));
     $output = '';
 
     foreach($input_nucleotide as $nucleotide) {
@@ -60,12 +60,40 @@ function dna_form_submit($form, &$form_state){
             $output .= 'c';
         }
     }
+    return $output;
+}
 
+function dna_form_submit($form, &$form_state){
+    $input = $form_state['values']['dna_nucleotide'];
+    $output = double_helix_creator($input);
     $_SESSION['new_dna'] = $output;
     $form_state['redirect'] = 'dna_success_page';
 }
 
+
 function dna_success(){
     $dna = $_SESSION['new_dna'];
-    return "Your double helix is: $dna";
+    return "Your double helix is: $dna. You are not an alien.";
 }
+
+
+// function dna_form_submit($form, &$form_state){
+//     // $nucleotide_set_one = array('a', 't', 'c', 'g');
+//     $input_nucleotide = str_split(strtolower($form_state['values']['dna_nucleotide']));
+//     $output = '';
+//
+//     foreach($input_nucleotide as $nucleotide) {
+//         if($nucleotide === 'a') {
+//             $output .= 't';
+//         } elseif($nucleotide === 't'){
+//             $output .= 'a';
+//         } elseif($nucleotide === 'c'){
+//             $output .= 'g';
+//         } elseif($nucleotide === 'g'){
+//             $output .= 'c';
+//         }
+//     }
+//
+//     $_SESSION['new_dna'] = $output;
+//     $form_state['redirect'] = 'dna_success_page';
+// }
