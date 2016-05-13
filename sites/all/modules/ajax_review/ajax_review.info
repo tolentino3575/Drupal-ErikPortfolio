@@ -1,0 +1,5 @@
+name = Ajax Code Review
+description = A view containing ajax
+package = Erik Custom
+core = 7.x
+files[] = ajax_review.module
