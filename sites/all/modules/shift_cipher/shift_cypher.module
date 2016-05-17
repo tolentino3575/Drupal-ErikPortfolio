@@ -23,7 +23,7 @@ function shift_cypher_form(){
         '#title' => 'Shift Value',
         '#type' => 'textfield',
         '#description' => 'How many spaces would you like to shift?',
-        '#element_validate' => array('element_validate_integer_positive'),
+        '#element_validate' => array('element_validate_integer_positive', 'element_validate_integer_range'),
         '#required' => TRUE,
     );
     $form['shift_direction'] = array(
@@ -45,6 +45,12 @@ function shift_cypher_form(){
         '#value' => 'GO!',
     );
     return $form;
+}
+
+function element_validate_integer_range($element) {
+    if($element['#value'] > 26 || $element['#value'] < 1) {
+        form_error($element, 'Please enter a number between 1 & 26.');
+    }
 }
 
 function element_validate_direction($element) {
@@ -71,8 +77,8 @@ function element_validate_direction($element) {
 function element_validate_phrase($element) {
     $phrase = strtolower($element['#value']);
 
-    if(!preg_match("/^[a-zA-Z\ .'s]*$/", $phrase)) {
-        form_set_error('phrase', t('Only letters and punctuation!'));
+    if(preg_match('/\d/', $phrase)) {
+        form_error($element, t('Only letters and punctuation!'));
     }
 }
 
